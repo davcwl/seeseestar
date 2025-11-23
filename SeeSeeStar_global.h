@@ -1,0 +1,12 @@
+#ifndef SEESEESTAR_GLOBAL_H
+#define SEESEESTAR_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SEESEESTAR_LIBRARY)
+#define SEESEESTAR_EXPORT Q_DECL_EXPORT
+#else
+#define SEESEESTAR_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SEESEESTAR_GLOBAL_H
