@@ -15,7 +15,8 @@ add_library(SeeSeeStar SHARED
   SeeSeeStar_global.h
   graph.cpp
   graph.h
-  node.h node.cpp
+  node.h
+  node.cpp
 )
 
 target_link_libraries(SeeSeeStar PRIVATE Qt${QT_VERSION_MAJOR}::Core)
