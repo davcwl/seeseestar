@@ -4,9 +4,12 @@
 
 //Contructor implementations
 Edge::Edge()
+    //Default constructor, Edges will by default be two nullprts with a weight of INF.
     : nodes{nullptr, nullptr}, weight(INFINITY) {}
 
 Edge::Edge(Node* nodeA, Node* nodeB)
+    /*Standard constructor. Edges will store two node pointers in a std::array<Node*, 2>.
+     Weight is automatically calculated as the Euclidean Distance between these two Nodes.*/
     : nodes{nodeA, nodeB}, weight(getEuclideanDistance(nodeA, nodeB)) {
     if (!isValidEdge()) {
         throw std::invalid_argument("Edge cannot connect a node to itself.");
@@ -14,6 +17,8 @@ Edge::Edge(Node* nodeA, Node* nodeB)
 }
 
 Edge::Edge(Node* nodeA, Node* nodeB, double weight)
+    /*Standard constructor but with specific weight. Edges will store two node pointers in a std::array<Node*, 2>.
+     Weight is a double type value.*/
     : nodes{nodeA, nodeB}, weight(weight) {
     if (!isValidEdge()) {
         throw std::invalid_argument("Edge cannot connect a node to itself.");
