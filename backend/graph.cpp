@@ -64,11 +64,11 @@ Node* Graph::findNodeById(int id) const {
 Edge* Graph::findEdge(Node* nodeA, Node* nodeB) const {
 
 }
-double Graph::getDistance(Node* nodeA, Node* nodeB) const {
+double Graph::heuristic(Node* node) const {
 
 }
 
-std::vector<Node*> Graph::shortestPath(Node* start, Node* end) const {
+std::vector<Node*> Graph::calculateShortestPath() const {
 
 }
 
