@@ -45,12 +45,22 @@ void Graph::addNode(Node* node) {
     }
 }
 void Graph::addEdge(Edge* edge) {
-    for (Edge* edgeInGraph : this->edges) {
-        for (Node* node : edge->getNodes()) {
+    Node* A = edge->getNodes()[0];
+    Node* B = edge->getNodes()[1];
 
+    for (Edge* edgeInGraph : this->edges) {
+        Node* graphNodeA = edgeInGraph->getNodes()[0];
+        Node* graphNodeB = edgeInGraph->getNodes()[1];
+
+        bool sameOrder = (A == graphNodeA && B == graphNodeB);
+        bool reverseOrder = (A == graphNodeB && B == graphNodeA);
+
+        if (sameOrder || reverseOrder) {
+            throw std::invalid_argument("Graph already contains the given edge.");
         }
     }
 
+    this->edges.push_back(edge);
 }
 void Graph::removeNode(Node* node) {
 
@@ -59,13 +69,26 @@ void Graph::removeEdge(Edge* edge) {
 
 }
 Node* Graph::findNodeById(int id) const {
-
+    for (Node* node : this->nodes) {
+        if (node->getId() == id) {
+            return node;
+        }
+    }
+    return nullptr;
 }
 Edge* Graph::findEdge(Node* nodeA, Node* nodeB) const {
-
+    for (Edge* edge : this->edges) {
+        auto nodes = edge->getNodes();
+        if ((nodes[0] == nodeA && nodes[1] == nodeB) ||
+            (nodes[0] == nodeB && nodes[1] == nodeA)) {
+            return edge;
+        }
+    }
+    return nullptr;
 }
 double Graph::heuristic(Node* node) const {
-
+    if (!this->goalNode) return 0.0;
+    return Edge::getEuclideanDistance(node, this->goalNode);
 }
 
 std::vector<Node*> Graph::calculateShortestPath() const {
