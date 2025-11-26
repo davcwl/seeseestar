@@ -1,5 +1,8 @@
 #include "graph.h"
 #include <algorithm>
+#include <stdexcept>
+#include <queue>
+#include <unordered_map>
 
 //Constructor implementations
 Graph::Graph()
@@ -21,6 +24,7 @@ Node* Graph::getStartingNode() const {
 Node* Graph::getGoalNode() const {
     return this->goalNode;
 }
+
 //Setter implementations
 void Graph::setNodes(std::vector<Node*> nodes) {
     this->nodes = nodes;
@@ -62,11 +66,50 @@ void Graph::addEdge(Edge* edge) {
 
     this->edges.push_back(edge);
 }
-void Graph::removeNode(Node* node) {
 
+std::vector<Edge*> Graph::getConnectedEdges(Node* node) const {
+    std::vector<Edge*> connectedEdges;
+
+    for (Edge* edge : this->edges) {
+        Node* nodeA = edge->getNodes()[0];
+        Node* nodeB = edge->getNodes()[1];
+
+        if (nodeA == node || nodeB == node) {
+            connectedEdges.push_back(edge);
+        }
+    }
+
+    return connectedEdges;
+}
+
+void Graph::removeNode(Node* node) {
+    if (!node) return;
+
+    //Remove all edges connected
+    std::vector<Edge*> connected = getConnectedEdges(node);
+    for (Edge* edge : connected) {
+        removeEdge(edge);
+    }
+
+    //Remove from this->nodes
+    auto it = std::find(this->nodes.begin(), this->nodes.end(), node);
+    if (it != this->nodes.end()) {
+        this->nodes.erase(it);
+    }
+
+    if (startingNode == node) startingNode = nullptr;
+    if (goalNode == node)     goalNode = nullptr;
+
+    delete node;
 }
 void Graph::removeEdge(Edge* edge) {
+    if (!edge) return;
 
+    auto it = std::find(this->edges.begin(), this->edges.end(), edge);
+    if (it != this->edges.end()) {
+        this->edges.erase(it);
+        delete edge;
+    }
 }
 Node* Graph::findNodeById(int id) const {
     for (Node* node : this->nodes) {
@@ -92,12 +135,105 @@ double Graph::heuristic(Node* node) const {
 }
 
 std::vector<Node*> Graph::calculateShortestPath() const {
+    //If there is no start or goal
+    if (!startingNode || !goalNode) {
+        return {};
+    }
 
+    //Frontier elements
+    using FrontierItem = std::pair<double, Node*>;
+    //Priority queue comparison lambda
+    auto comparator = [](const FrontierItem& a, const FrontierItem& b) {
+        return a.first > b.first;
+    };
+    //Priority queue
+    std::priority_queue<FrontierItem, std::vector<FrontierItem>, decltype(comparator)> frontier(comparator);
+
+    //Cost to reach "node" from startingNode
+    std::unordered_map<Node*, double> gScore;
+
+    //fScore of a node is the total estimated cost (g + h). Where g is the total weight and h is the heuristic.
+    std::unordered_map<Node*, double> fScore;
+
+    //currently best known path
+    std::unordered_map<Node*, Node*> cameFrom;
+
+    //Initialize maps
+    for (Node* node : this->nodes) {
+        gScore[node] = INFINITY;
+        fScore[node] = INFINITY;
+        cameFrom[node] = nullptr;
+    }
+
+    gScore[startingNode] = 0.0;
+    fScore[startingNode] = heuristic(startingNode);
+
+    //Start search
+    frontier.push({fScore[startingNode], startingNode});
+
+    while (!frontier.empty()) {
+        Node* currentNode = frontier.top().second;
+        frontier.pop();
+
+        // Reached goal
+        if (currentNode == goalNode) {
+            break;
+        }
+
+        for (auto& [neighbour, weight] : getNeighbours(currentNode)) {
+
+            double tentative_g = gScore[currentNode] + weight;
+
+            if (tentative_g < gScore[neighbour]) {
+                cameFrom[neighbour] = currentNode;
+                gScore[neighbour] = tentative_g;
+                fScore[neighbour] = tentative_g + heuristic(neighbour);
+
+                frontier.push({fScore[neighbour], neighbour});
+            }
+        }
+    }
+
+    //If there is no path
+    if (cameFrom[goalNode] == nullptr && startingNode != goalNode) {
+        return {}; // no path
+    }
+
+    //Reconstruct path
+    std::vector<Node*> shortestPath;
+    Node* curr = goalNode;
+
+    while (curr) {
+        shortestPath.push_back(curr);
+        if (curr == startingNode) break;
+        curr = cameFrom[curr];
+    }
+
+    std::reverse(shortestPath.begin(), shortestPath.end());
+    return shortestPath;
+}
+
+std::vector<std::pair<Node*, double>> Graph::getNeighbours(Node* node) const {
+    std::vector<std::pair<Node*, double>> neighbours;
+
+    for (Edge* edge : getConnectedEdges(node)) {
+        Node* nodeA = edge->getNodes()[0];
+        Node* nodeB = edge->getNodes()[1];
+
+        if (nodeA == node) {
+            neighbours.emplace_back(nodeB, edge->getWeight());
+        }
+        else if (nodeB == node) {
+            neighbours.emplace_back(nodeA, edge->getWeight());
+        }
+    }
+
+    return neighbours;
 }
 
 //Helper implementations
 std::string Graph::toString() const {
-
+    return "";
 }
 
 

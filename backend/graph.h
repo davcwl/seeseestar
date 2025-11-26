@@ -12,8 +12,6 @@ private:
     std::vector<Node*> nodes;
     std::vector<Edge*> edges;
 
-    std::vector<Edge*> shortestPath;
-
     Node* startingNode;
     Node* goalNode;
 
@@ -22,13 +20,11 @@ public:
     //Getters
     const std::vector<Node*> getNodes() const;
     const std::vector<Edge*> getEdges() const;
-    const std::vector<Edge*> getShortestPath() const;
     Node* getStartingNode() const;
     Node* getGoalNode() const;
     //Setters
     void setNodes(std::vector<Node*> nodes);
     void setEdges(std::vector<Edge*> edges);
-    void setShortestPath(std::vector<Edge*> path);
     void setStartingNode(Node* node);
     void setGoalNode(Node* node);
 
@@ -39,6 +35,9 @@ public:
     void removeEdge(Edge* edge);
     Node* findNodeById(int id) const;
     Edge* findEdge(Node* nodeA, Node* nodeB) const;
+    std::vector<std::pair<Node*, double>> getNeighbours(Node* node) const;
+
+    std::vector<Edge*> getConnectedEdges(Node* node) const;
 
     //Helpers
     std::string toString() const;

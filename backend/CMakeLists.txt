@@ -18,6 +18,8 @@ add_library(SeeSeeStar SHARED
   node.h
   node.cpp
   edge.h edge.cpp
+  api.h api.cpp
+
 )
 
 target_link_libraries(SeeSeeStar PRIVATE Qt${QT_VERSION_MAJOR}::Core)
