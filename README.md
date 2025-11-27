@@ -1,6 +1,6 @@
 # SeeSeeStar
 
-**Simple cross-platform (Android & Windows) application using C++ Qt and C# .NET MAUI**
+**Simple cross-platform (Android & Windows) application using C++ and C# .NET MAUI**
 
 ---
 
@@ -8,7 +8,7 @@
 
 This project is designed to explore and demonstrate **cross-platform application development** using a hybrid tech stack:
 
-- **Backend:** C++ with Qt 6.10.1 (Community Edition)  
+- **Backend:** C++
 - **Frontend:** C# using .NET MAUI  
 
 The application allows users to:
@@ -34,21 +34,13 @@ The purpose of this project is to study scalable cross-platform development and 
 
 ## Dependencies
 
-- **Qt 6.10.1 Community Edition**  
-  [Download Qt OSS](https://www.qt.io/download-qt-installer-oss)  
 - **.NET / MAUI** for frontend  
-
-> Note: Qt libraries are dynamically linked to comply with LGPL.
 
 ---
 
 ## Building the Project
 
-### Backend (Qt C++)
-
-1. Install Qt 6.10.1 (Community Edition)  
-2. Open the `backend` folder in **Qt Creator**  
-3. Build the project (dynamic linking to Qt)  
+### Backend (C++)
 
 ### Frontend (C# MAUI)
 
@@ -62,4 +54,3 @@ The purpose of this project is to study scalable cross-platform development and 
 ## License
 
 - **Backend & frontend code:** MIT License  
-- **Qt libraries:** LGPL (Community Edition)
