@@ -18,7 +18,7 @@ public:
     double getLongitude() const;
 
     //Setters
-    void setId(int it);
+    void setId(int id);
     void setName(const std::string& name);
     void setLatitude(double latitude);
     void setLongitude(double longitude);

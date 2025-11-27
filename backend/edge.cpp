@@ -1,10 +1,11 @@
 #include "edge.h"
 #include <cmath>
 #include <sstream>
+#include <stdexcept>
 
 //Contructor implementations
 Edge::Edge()
-    //Default constructor, Edges will by default be two nullprts with a weight of INF.
+    //Default constructor, Edges will by default be two nullptrs with a weight of INF.
     : nodes{nullptr, nullptr}, weight(INFINITY) {}
 
 Edge::Edge(Node* nodeA, Node* nodeB)
@@ -51,8 +52,8 @@ double Edge::getWeight() const {
 
 //Methods
 double Edge::getEuclideanDistance(Node* nodeA, Node* nodeB) {
-    double dx = nodeA->getLatitude() - nodeB->getLatitude();
-    double dy = nodeA->getLongitude() - nodeB->getLongitude();
+    double dy = nodeA->getLatitude() - nodeB->getLatitude();
+    double dx = nodeA->getLongitude() - nodeB->getLongitude();
     return std::sqrt(dx*dx + dy*dy);
 }
 
