@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <queue>
 #include <unordered_map>
+#include <cmath>
 
 //Constructor implementations
 Graph::Graph()
@@ -11,11 +12,21 @@ Graph::Graph()
 Graph::Graph(std::vector<Node*> nodes, std::vector<Edge*> edges, Node* startingNode, Node* goalNode)
     : nodes(nodes), edges(edges), startingNode(startingNode), goalNode(goalNode) {}
 
+//Deconstructor implementation
+Graph::~Graph() {
+    for (Edge* edge : this->edges) {
+        delete edge;
+    }
+    for (Node* node : this->nodes) {
+        delete node;
+    }
+}
+
 //Getter implementations
-const std::vector<Node*> Graph::getNodes() const {
+const std::vector<Node*>& Graph::getNodes() const {
     return this->nodes;
 }
-const std::vector<Edge*> Graph::getEdges() const {
+const std::vector<Edge*>& Graph::getEdges() const {
     return this->edges;
 }
 Node* Graph::getStartingNode() const {
@@ -49,15 +60,15 @@ void Graph::addNode(Node* node) {
     }
 }
 void Graph::addEdge(Edge* edge) {
-    Node* A = edge->getNodes()[0];
-    Node* B = edge->getNodes()[1];
+    Node* nodeA = edge->getNodes()[0];
+    Node* nodeB = edge->getNodes()[1];
 
     for (Edge* edgeInGraph : this->edges) {
         Node* graphNodeA = edgeInGraph->getNodes()[0];
         Node* graphNodeB = edgeInGraph->getNodes()[1];
 
-        bool sameOrder = (A == graphNodeA && B == graphNodeB);
-        bool reverseOrder = (A == graphNodeB && B == graphNodeA);
+        bool sameOrder = (nodeA == graphNodeA && nodeB == graphNodeB);
+        bool reverseOrder = (nodeA == graphNodeB && nodeB == graphNodeA);
 
         if (sameOrder || reverseOrder) {
             throw std::invalid_argument("Graph already contains the given edge.");

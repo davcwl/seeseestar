@@ -5,7 +5,7 @@
 
 //Contructor implementations
 Edge::Edge()
-    //Default constructor, Edges will by default be two nullprts with a weight of INF.
+    //Default constructor, Edges will by default be two nullptrs with a weight of INF.
     : nodes{nullptr, nullptr}, weight(INFINITY) {}
 
 Edge::Edge(Node* nodeA, Node* nodeB)
