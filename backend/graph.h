@@ -1,12 +1,11 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "SeeSeeStar_global.h"
 #include <vector>
 #include "node.h"
 #include "edge.h"
 
-class SEESEESTAR_EXPORT Graph
+class Graph
 {
 private:
     std::vector<Node*> nodes;
